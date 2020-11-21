@@ -1,11 +1,24 @@
-import React from 'react'
+import React ,{useState} from 'react'
 import { Form, Grid, Segment, Button, Icon, Modal } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom'
+import {SigninUser} from '../../config/Firebase'
 
 function Signup() {
 
+    const [email,setEmail]=useState('')
+    const [password,setPassword]=useState('')
     const history = useHistory()
 
+    const setLogin=async function(){
+        try{
+            const result =await SigninUser(email,password)
+            localStorage.setItem('userId',result.user.uid)
+            history.push('/Chat')
+        }
+        catch(e){
+            alert(e.message)
+        }
+    }
     return (
       <div >
          <Grid style={{ width: 382, verticalAlign: 'left' }}>
@@ -20,7 +33,7 @@ function Signup() {
                                     fluid
                                     label='Email'
                                     placeholder='Enter Email'
-                                
+                                onChange={(e)=>setEmail(e.target.value)}
                                 />
                             </Form.Group>
 
@@ -29,14 +42,14 @@ function Signup() {
                                     fluid
                                     label='Password'
                                     placeholder='Enter Password'
-                                  
+                                    onChange={(e)=>setPassword(e.target.value)}
                                 />
                             </Form.Group>
 
                             <Button.Group widths='2'>
                                 <Button
                                     secondary
-                                    // onClick={setLogin}
+                                    onClick={setLogin}
                                 >Login</Button>
                             </Button.Group>
                             <div style={{

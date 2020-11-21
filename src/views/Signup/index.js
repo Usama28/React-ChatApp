@@ -1,10 +1,36 @@
 import React, { useState } from 'react'
 import { Form, Grid, Segment, Button, Icon } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom'
+import {SignupUser} from '../../config/Firebase'
+import firebase from '../../config/Firebase'
 
 function SignUp(props) {
 
+    
+    const [fullName,setFullname]=useState('')
+    const [email,setEmail]=useState('')
+    const [password,setPassword]=useState('')
+    const [cnfirmPassword,setCnfirmPassword]=useState('')
     const history = useHistory()
+
+const getUser=async function(){
+    try{
+        if(password !== cnfirmPassword){
+            return alert('Password Does not Matched')
+        }
+        else{
+            const result=await SignupUser(email,password)
+            localStorage.setItem('userId',result.user.uid)
+            firebase.firestore().collection('users').doc(result.user.uid).set({email,fullName})
+            history.push('/Chat')
+        }      
+    }
+    catch(e){
+        alert(e.message)
+    }
+
+}
+
     return (
         <div>
 
@@ -17,10 +43,11 @@ function SignUp(props) {
                             <Segment style={{ padding: '4%' }}>
 
                                 <Form.Group widths='equal'>
-                                    <Form.Input label='First Name' placeholder='Enter first name' />
-                                </Form.Group>
-                                <Form.Group widths='equal'>
-                                    <Form.Input label='Last Name' placeholder='Enter last name' />
+                                    <Form.Input 
+                                    label='Full Name'
+                                     placeholder='Enter your full name' 
+                                     onChange={(e)=>setFullname(e.target.value)}
+                                     />
                                 </Form.Group>
 
                                 <Form.Group widths='equal'>
@@ -28,7 +55,7 @@ function SignUp(props) {
                                         fluid
                                         label='Email'
                                         placeholder='Enter Email'
-                                        
+                                        onChange={(e)=>setEmail(e.target.value)}
                                     />
                                 </Form.Group>
 
@@ -37,7 +64,7 @@ function SignUp(props) {
                                         fluid
                                         label='Password'
                                         placeholder='Enter Password'
-                                       
+                                        onChange={(e)=>setPassword(e.target.value)}
                                     />
                                 </Form.Group>
                                 <Form.Group widths='equal'>
@@ -45,13 +72,14 @@ function SignUp(props) {
                                         fluid
                                         label='Confirm Password'
                                         placeholder='Enter Password again'
+                                        onChange={(e)=>setCnfirmPassword(e.target.value)}
                                     />
                                 </Form.Group>
 
                                 <Button.Group widths='2'>
                                     <Button
                                         secondary
-                                       
+                                       onClick={getUser}
                                     >Sign Up</Button>
                                 </Button.Group>
                                 <div style={{

@@ -25,7 +25,7 @@ function RouterFunc() {
           <Route path="/Chat">
             <Chat />
           </Route>
-          <Route path="/Chatroom">
+          <Route path="/Chatroom/:ChatId">
             <Chatroom />
           </Route>  
         </Switch>

@@ -1,12 +1,15 @@
 import React ,{useState} from 'react'
 import { Form, Grid, Segment, Button, Icon, Modal } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom'
-import {SigninUser} from '../../config/Firebase'
+import {SigninUser,googleSignIn,FacebookSignIn} from '../../config/Firebase'
+import firebase from '../../config/Firebase'
 
 function Signup() {
 
     const [email,setEmail]=useState('')
     const [password,setPassword]=useState('')
+    const [provider,setProvider]=useState('')
+    const [googleProvider,setGoogleProvider]=useState('')
     const history = useHistory()
 
     const setLogin=async function(){
@@ -19,6 +22,36 @@ function Signup() {
             alert(e.message)
         }
     }
+
+    const GoogleUser=async function(){
+      try{
+        const result=await googleSignIn(googleProvider)
+        localStorage.setItem('userId',result.user.uid)
+        history.push('/Chat')
+        firebase.firestore().collection('users').doc(result.user.uid).set({email:result.user.email,fullName:result.user.displayName})
+      }
+      catch(e)
+      {
+          alert(e.message)
+      }
+    }
+
+    const FacebookUser=async function(){
+        try{
+          const result=await FacebookSignIn(provider)
+          var token = result.credential.accessToken;
+          var user = result.user;
+          console.log(token)
+          localStorage.setItem('userId',result.user.uid)
+          history.push('/Chat')
+          firebase.firestore().collection('users').doc(result.user.uid).set({email:result.user.email,fullName:result.user.displayName})
+        }
+        catch(e)
+        {
+            alert(e.message)
+        }
+      }
+
     return (
       <div >
          <Grid style={{ width: 382, verticalAlign: 'left' }}>
@@ -69,12 +102,13 @@ function Signup() {
                             <Button.Group widths='2' style={{ marginTop: '3%' }}>
                                 <Button
                                     color='facebook'
+                                    onClick={FacebookUser}
                                      >
                                     <Icon name='facebook' /> Facebook
                                 </Button>
                                 <Button
                                     color='red'
-                                    // onClick={GoogleUser}
+                                    onClick={GoogleUser}
                                     style={{ marginLeft: '1%' }}>
                                     <Icon name='google' /> Google
                                 </Button>

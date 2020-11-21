@@ -3,36 +3,51 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Redirect
 } from "react-router-dom";
 import Login from '../views/Login'
 import Signup from '../views/Signup'
 import Chat from '../views/Chat'
 import Chatroom from '../views/Chatroom'
 
-function RouterFunc() {
+function RouterFunc({isLoading,isLoggedIn}) {
+
+  if (isLoading) 
+
+  {
+    return <div style={{ textAlign: 'center', marginTop: '10%' }}>
+        <img width='300' src="https://i.gifer.com/7SMT.gif" />
+    </div>
+  }
+    const currentPath = window.location.pathname.length === 1 ? 'Chat' : window.location.pathname
+    console.log(currentPath)
+
     return (
       <div >
         <Router>
-    
-        <Switch>
-        <Route path="/" exact>
-            <Login />
-          </Route>
-          <Route path="/Signup">
-            <Signup />
-          </Route>
-          <Route path="/Chat">
-            <Chat />
-          </Route>
-          <Route path="/Chatroom/:ChatId">
-            <Chatroom />
-          </Route>  
-        </Switch>
-      
-    </Router>
+          <Switch>
+                <Route path="/" exact>
+                  {isLoggedIn ? < Redirect to={currentPath} /> : <Login />}
+                </Route>
+                <Route path="/Signup">
+                  {StateChecker(isLoggedIn, <Signup />)}
+                </Route>
+                <Route path="/Chat">
+                  {AuthChecker(isLoggedIn, <Chat />)}
+                </Route>
+                <Route path="/Chatroom/:ChatId">
+                {AuthChecker(isLoggedIn,<Chatroom />)}
+                </Route>  
+          </Switch>
+        </Router>
       </div>
     );
   }
   
+function AuthChecker(loggedValue, component) {
+    return loggedValue ? component : <Redirect to='/' />
+}
+function StateChecker(stateValue, component) {
+  return !stateValue ? component : <Login />
+}
   export default RouterFunc;

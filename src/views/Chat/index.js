@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import { useHistory } from 'react-router-dom'
 import {getAllUsers,joinRoom} from '../../config/Firebase'
-import { Image } from 'semantic-ui-react'
+import { Image , Card, Feed,Button} from 'semantic-ui-react'
 
 function Chat() {
 
@@ -33,19 +33,33 @@ function Chat() {
     }
     return (
       <div >
-        <h1>Chats</h1>
-        {/* {users.map((item)=>{
-          return <div>
-                 <li>
-                    {item.fullName} 
-                    <button onClick={()=>navigateToChat(item.id)}>Chat</button>
-                </li>
-             
-             </div>
-          })
-        } */}
-        <Image src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-iNK3OdMdOoPK8xN85B8xONCvzgC0tVHSUw&usqp=CAU' size='small' />
         
+          <div className='chats'>
+          <Card>
+                <Card.Content>
+                  <Card.Header>Chats</Card.Header>
+                </Card.Content>
+                <Card.Content>
+                  {users.map (item=>{
+                    return <div>
+                      <Feed>
+                        <Feed.Event>
+                          <Feed.Label image='https://react.semantic-ui.com/images/avatar/large/matthew.png' />
+                          <Feed.Content>
+                            <Feed.Summary>
+                                {item.fullName} 
+                                <Button style={{margin:'0% 16%'}} onClick={()=>navigateToChat(item.id)}>hello</Button>
+                               
+                            </Feed.Summary>
+                          </Feed.Content>
+                        </Feed.Event>
+                      </Feed>
+                    </div>
+                  })}
+                  
+                </Card.Content>
+            </Card>
+          </div>
       </div>
     );
   }

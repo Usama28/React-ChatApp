@@ -1,6 +1,9 @@
 import React, { useState ,useEffect } from 'react'
 import {useParams} from 'react-router-dom'
 import {sendMessagetoDb,getMessages} from '../../config/Firebase'
+import firebase from '../../config/Firebase'
+import { Image , Card, Feed,Button,Accordion} from 'semantic-ui-react'
+
 
 function Chatroom() {
 
@@ -10,6 +13,7 @@ function Chatroom() {
   const [message,setMessage]=useState('')
   const [messageList,setMessageList]=useState([])
   const userId=localStorage.getItem('userId')
+  const displayName=localStorage.getItem('name')
 
   useEffect(()=>{
     showMessages()
@@ -45,6 +49,37 @@ function Chatroom() {
           <input type='text' value ={message} onChange={(e)=> setMessage(e.target.value)} />
           <button onClick={()=> sendMessage()}>Send</button>
         </div>
+
+        <Card >
+                <Card.Content>
+                  <Card.Header 
+                     style={{display:'flex',justifyContent:'space-between'}} 
+                  >
+                          <div>
+                            <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' avatar />
+                            <span>{displayName}</span>
+                          </div>
+                        <Button secondary size='mini' onClick={()=>firebase.auth().signOut()}>Log Out</Button>
+                  </Card.Header>
+          
+                </Card.Content>
+                <Card.Content style={{height:'400px'}}>
+                  
+                      <Feed>
+                        <Feed.Event>
+                         
+                          <Feed.Content>
+                            <Feed.Summary>
+
+                             
+                            </Feed.Summary>
+                          </Feed.Content>
+                        </Feed.Event>
+                      </Feed>
+                   
+                  
+                </Card.Content>
+            </Card>
 
       </div>
     );

@@ -33,7 +33,7 @@ function RouterFunc({isLoading,isLoggedIn}) {
                   {StateChecker(isLoggedIn, <Signup />)}
                 </Route>
                 <Route path="/Chat">
-                  {AuthChecker(isLoggedIn, <Chat />)}
+                  {AuthChecker(isLoggedIn, <Chat isLoggedIn={isLoggedIn} />)}
                 </Route>
                 <Route path="/Chatroom/:ChatId">
                 {AuthChecker(isLoggedIn,<Chatroom />)}

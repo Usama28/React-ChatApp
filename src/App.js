@@ -24,7 +24,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {isLoggedIn && <button onClick={()=>firebase.auth().signOut()}>Sign out</button>}
+        {/* {isLoggedIn && <button onClick={()=>firebase.auth().signOut()}>Sign out</button>} */}
         <Router isLoggedIn={isLoggedIn } isLoading={isLoading}/>
       </header>
     </div>

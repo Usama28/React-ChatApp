@@ -15,8 +15,8 @@ function RouterFunc({isLoading,isLoggedIn}) {
   if (isLoading) 
 
   {
-    return <div style={{ textAlign: 'center', marginTop: '10%' }}>
-        <img width='300' src="https://i.gifer.com/7SMT.gif" />
+    return <div style={{ textAlign: 'center', marginTop: '8%' }}>
+        <img width='300' src="https://i.pinimg.com/originals/49/db/58/49db58121197c490352b4ab3d978b6b0.gif" />
     </div>
   }
     const currentPath = window.location.pathname.length === 1 ? 'Chat' : window.location.pathname

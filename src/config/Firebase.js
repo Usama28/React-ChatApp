@@ -1,4 +1,5 @@
 import firebase from 'firebase'
+import moment from 'moment';
 var firebaseConfig = {
   apiKey: "AIzaSyCoHGcytfqmUHtS6T9qtOwTMAbY7fGgRRo",
   authDomain: "chat-app-b814e.firebaseapp.com",
@@ -36,11 +37,66 @@ var firebaseConfig = {
     return await firebase.firestore().collection('users').get()
   }
 
+  async function joinRoom(friendId){
+
+    const myId=localStorage.getItem('userId')
+    try{
+      
+        const response=await firebase.firestore().collection('chatrooms')
+        .where('user1','==',myId)
+        .where('user2','==',friendId)
+        .get()
+        console.log('response******',response)
+        let foundChatroom=false
+        response.forEach(doc=>{
+          foundChatroom={...doc.data(),id:doc.id}
+        })
+        
+        if(foundChatroom) return foundChatroom
+
+        const response2=await firebase.firestore().collection('chatrooms')
+        .where('user2','==',myId)
+        .where('user1','==',friendId)
+        .get()
+
+        response2.forEach(doc=>{
+          foundChatroom={...doc.data(),id:doc.id}
+        })
+        
+        if(foundChatroom) return foundChatroom
+
+        return await firebase.firestore().collection('chatrooms').add({
+          user1:localStorage.getItem('userId'),
+          user2:friendId,
+          timeStamp:moment().format('llll')
+        })
+    }
+    catch(e){
+      alert(e.message)
+    }
+
+  }
+
+  function sendMessagetoDb(message,ChatId){
+    return firebase.firestore().collection('chatrooms').doc(ChatId).collection('messages').add({
+      message,
+      userId:localStorage.getItem('userId'),
+      timeStamp:moment().format('llll')
+    })
+  }
+
+  function getMessages(ChatId){
+    return  firebase.firestore().collection('chatrooms').doc(ChatId).collection('messages').orderBy('timeStamp','asc').get()
+  }
+
   export {
     SignupUser,
     SigninUser,
     googleSignIn,
     FacebookSignIn,
-    getAllUsers
+    getAllUsers,
+    joinRoom,
+    sendMessagetoDb,
+    getMessages
   }
   export default firebase

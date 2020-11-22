@@ -56,7 +56,7 @@ function Chat({isLoggedIn}) {
                             <Feed.Summary>
 
                                 <Accordion>
-                                     <Accordion.Title
+                                     <Accordion.Title 
                                          onClick={()=>navigateToChat(item.id,item.fullName)}>
                                             {item.fullName}
                                       </Accordion.Title>

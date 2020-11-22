@@ -68,7 +68,7 @@ var firebaseConfig = {
         return await firebase.firestore().collection('chatrooms').add({
           user1:localStorage.getItem('userId'),
           user2:friendId,
-          timeStamp:moment().format('llll')
+          timeStamp:moment().calendar()
         })
     }
     catch(e){
@@ -81,7 +81,7 @@ var firebaseConfig = {
     return firebase.firestore().collection('chatrooms').doc(ChatId).collection('messages').add({
       message,
       userId:localStorage.getItem('userId'),
-      timeStamp:moment().format('llll')
+      timeStamp:moment().calendar()
     })
   }
 

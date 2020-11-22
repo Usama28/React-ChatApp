@@ -2,7 +2,7 @@ import React, { useState ,useEffect } from 'react'
 import {useParams} from 'react-router-dom'
 import {sendMessagetoDb,getMessages} from '../../config/Firebase'
 import firebase from '../../config/Firebase'
-import { Image , Card, Feed,Button,Accordion} from 'semantic-ui-react'
+import { Image , Card, Feed,Button,Accordion,Input} from 'semantic-ui-react'
 
 
 function Chatroom() {
@@ -37,20 +37,8 @@ function Chatroom() {
     return (
       <div >
         <h1>chatroom</h1>
-        <div>
-            {messageList.map(item=>{
-              return <div style={{textAlign : userId===item.userId ? 'right' : 'left'}}>
-                <p>{item.message}</p>
-            <p>{item.timeStamp}</p>
-              </div>
-            })}          
-        </div>
-        <div>
-          <input type='text' value ={message} onChange={(e)=> setMessage(e.target.value)} />
-          <button onClick={()=> sendMessage()}>Send</button>
-        </div>
 
-        <Card >
+          <Card >
                 <Card.Content>
                   <Card.Header 
                      style={{display:'flex',justifyContent:'space-between'}} 
@@ -64,20 +52,24 @@ function Chatroom() {
           
                 </Card.Content>
                 <Card.Content style={{height:'400px'}}>
-                  
-                      <Feed>
-                        <Feed.Event>
-                         
-                          <Feed.Content>
-                            <Feed.Summary>
-
-                             
-                            </Feed.Summary>
-                          </Feed.Content>
-                        </Feed.Event>
-                      </Feed>
-                   
-                  
+                <div>
+                    {messageList.map(item=>{
+                      return <div style={{textAlign : userId===item.userId ? 'right' : 'left'}}>
+                        <p>{item.message}</p>
+                    <p>{item.timeStamp}</p>
+                      </div>
+                    })}          
+                </div>
+                          
+                            <Input 
+                                fluid 
+                                placeholder='Type a message...'
+                                style={{position:'absolute' , bottom:0 ,width:'260px' ,marginBottom:'3%'}}
+                                type='text' value ={message} onChange={(e)=> setMessage(e.target.value)}
+                                action={
+                                <Button color='teal' onClick={()=> sendMessage()}>send</Button>
+                              }/>
+                          
                 </Card.Content>
             </Card>
 

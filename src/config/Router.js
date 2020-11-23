@@ -15,7 +15,7 @@ function RouterFunc({isLoading,isLoggedIn}) {
   if (isLoading) 
 
   {
-    return <div style={{ textAlign: 'center', marginTop: '8%' }}>
+    return <div style={{ textAlign: 'center', marginTop: '5%' }}>
         <img width='300' src="https://i.pinimg.com/originals/49/db/58/49db58121197c490352b4ab3d978b6b0.gif" />
     </div>
   }

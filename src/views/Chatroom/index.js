@@ -2,7 +2,7 @@ import React, { useState ,useEffect } from 'react'
 import {useParams} from 'react-router-dom'
 import {sendMessagetoDb,getMessages} from '../../config/Firebase'
 import firebase from '../../config/Firebase'
-import { Image , Card, Feed,Button,Accordion,Input} from 'semantic-ui-react'
+import { Image , Card, Icon,Button,Accordion,Input} from 'semantic-ui-react'
 
 
 function Chatroom() {
@@ -36,31 +36,48 @@ function Chatroom() {
  
     return (
       <div >
-        <h1>chatroom</h1>
-
           <Card >
                 <Card.Content>
                   <Card.Header 
                      style={{display:'flex',justifyContent:'space-between'}} 
                   >
                           <div>
+                          <Icon  name='arrow left' size='small' />
                             <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' avatar />
                             <span>{displayName}</span>
                           </div>
-                        <Button secondary size='mini' onClick={()=>firebase.auth().signOut()}>Log Out</Button>
+                        <Button secondary size='mini' onClick={()=>firebase.auth().signOut()}>
+                            Log Out 
+                        </Button>
                   </Card.Header>
           
                 </Card.Content>
-                <Card.Content style={{height:'400px'}}>
-                <div>
+                
+               
+                  <Card.Content style={{height:'400px',overflow: 'auto', backgroundColor:'#F2F3F4'}}>
                     {messageList.map(item=>{
-                      return <div style={{textAlign : userId===item.userId ? 'right' : 'left'}}>
+                      return <div style={{textAlign : userId===item.userId ? 'right' : 'left',
+                                           backgroundColor:userId===item.userId ?'black' : 'white',
+                                           color:userId===item.userId ? 'white' : 'black',
+                                           margin:userId===item.userId ? '1% 0% 1% 38%': '1% 38% 1% 0%',
+                                          border:'1px solid transparent',
+                                          borderRadius:'8px',
+                                          padding:'3%'
+
+                                          }}>
                         <p>{item.message}</p>
-                    <p>{item.timeStamp}</p>
+                        <Card.Meta 
+                                  style={{textAlign:'right',
+                                  color:userId===item.userId ? 'grey' : '',
+                                  fontSize:'10px'
+                                  }}>
+                                  {item.timeStamp}
+                        </Card.Meta>
                       </div>
-                    })}          
-                </div>
-                          
+                    })} 
+                  </Card.Content>         
+                
+                  <Card.Content >       
                             <Input 
                                 fluid 
                                 placeholder='Type a message...'

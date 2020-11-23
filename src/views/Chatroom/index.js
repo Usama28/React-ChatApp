@@ -1,5 +1,5 @@
 import React, { useState ,useEffect } from 'react'
-import {useParams} from 'react-router-dom'
+import {useParams , useHistory} from 'react-router-dom'
 import {sendMessagetoDb,getMessages} from '../../config/Firebase'
 import firebase from '../../config/Firebase'
 import { Image , Card, Icon,Button,Accordion,Input} from 'semantic-ui-react'
@@ -14,6 +14,7 @@ function Chatroom() {
   const [messageList,setMessageList]=useState([])
   const userId=localStorage.getItem('userId')
   const displayName=localStorage.getItem('name')
+  const history = useHistory()
 
   useEffect(()=>{
     showMessages()
@@ -42,7 +43,7 @@ function Chatroom() {
                      style={{display:'flex',justifyContent:'space-between'}} 
                   >
                           <div>
-                          <Icon  name='arrow left' size='small' />
+                              <a><Icon  name='arrow left' size='small' onClick={()=>history.goBack()} /></a>
                             <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' avatar />
                             <span>{displayName}</span>
                           </div>

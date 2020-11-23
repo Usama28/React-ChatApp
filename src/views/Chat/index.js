@@ -6,6 +6,7 @@ import firebase from '../../config/Firebase'
 
 function Chat({isLoggedIn}) {
 
+    const userId=localStorage.getItem('userId')
     const [users,setUsers]=useState([])
     const history = useHistory()
     useEffect(()=>{
@@ -58,7 +59,7 @@ function Chat({isLoggedIn}) {
                                 <Accordion>
                                      <Accordion.Title 
                                          onClick={()=>navigateToChat(item.id,item.fullName)}>
-                                            {item.fullName}
+                                            {userId===item.id ? item.fullName +' (You)': item.fullName}
                                       </Accordion.Title>
                                 </Accordion>
 
